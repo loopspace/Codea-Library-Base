@@ -309,6 +309,13 @@ function Rectangle:ScaleAboutPoint(v,p)
    return Rectangle({ll = ll, size = s})
 end
 
+function Rectangle:isInside(v)
+    if v.x < self.ll.x or v.x > self.ll.x + self.size.x or v.y < self.ll.y or v.y > self.ll.y + self.size.y then
+        return false
+    end
+    return true
+end
+
 if _M then
     return Rectangle
 else

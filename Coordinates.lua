@@ -155,6 +155,19 @@ function TransformTouch(o,t)
     return tt
 end
 
+function TransformObjectTouch(obj,fn)
+    local __tby = obj.isTouchedBy
+    local __pth = obj.processTouches
+    obj.isTouchedBy = function(s,t)
+        t = TransformTouch(fn,t)
+        return __tby(s,t)
+    end
+    obj.processTouches = function(s,g)
+        g:transformTouches(fn)
+        return __pth(s,g)
+    end
+end
+
 --[[
 Apply a transformation to transform the following drawing commands
 relative to orientation o into commands relative to the current

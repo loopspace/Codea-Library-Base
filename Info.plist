@@ -7,8 +7,8 @@
 	<key>Buffer Order</key>
 	<array>
 		<string>ChangeLog</string>
+		<string>ColourExt</string>
 		<string>Main</string>
-		<string>Graph</string>
 		<string>Rectangle</string>
 		<string>Font</string>
 		<string>Coordinates</string>
@@ -20,7 +20,7 @@
 		<string>utf8Case</string>
 		<string>utf8</string>
 		<string>Debug</string>
-		<string>ColourExt</string>
+		<string>Graph</string>
 	</array>
 	<key>Created</key>
 	<date>2011-11-19T09:27:53Z</date>

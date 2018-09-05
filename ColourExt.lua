@@ -65,7 +65,7 @@ if not mt.__is_extended then
         s = s or 1
         l = l or 1
         a = a or 255
-        local c = (1-2*math.abs(2*l-1))*s*255
+        local c = (1-math.abs(2*l-1))*s*255
         local m = l*255 - c/2
         local x = c*(1 - math.abs(h%2 - 1))
         local r,g,b

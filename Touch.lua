@@ -254,6 +254,9 @@ function Touches:getById(id)
 end
 
 function Touches:reset()
+    for k,v in pairs(self.touches) do
+        v:destroy()
+    end
     self.touches = {}
     self.numTouches = 0
     self.actives = {}

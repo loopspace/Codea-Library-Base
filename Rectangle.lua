@@ -316,6 +316,79 @@ function Rectangle:isInside(v)
     return true
 end
 
+function Rectangle:draw()
+    pushStyle()
+    rectMode(CORNER)
+    rect(self.ll.x,self.ll.y,self.size.x,self.size.y)
+    popStyle()
+end
+
+function Rectangle:setAnchor(a,v,w)
+    a = string.lower(a)
+    a = string.gsub(a," ","")
+    if a == "inside" or a == "insideverticalhorizontal" or a == "insidehorizontalvertical" then
+        self.ll.x = math.min(v.x,w.x)
+        self.ll.y = math.min(v.y,w.y)
+        self.size.x = math.max(v.x,w.x)
+        self.size.y = math.max(v.y,w.y)
+        self.size = self.size - self.ll
+        return
+    end
+    if a == "insidehorizontal" then
+        self.ll.x = math.min(v.x,w.x)
+        self.size.x = math.max(v.x,w.x) - self.ll.x
+        return
+    end
+    if a == "insidevertical" then
+        self.ll.y = math.min(v.y,w.y)
+        self.size.y = math.max(v.y,w.y) - self.ll.y
+        return
+    end
+    if a == "centre" or a == "center" then
+        self.ll = v - self.size/2
+        return
+    end
+    if a == "southwest" or a == "lowerleft" then
+        self.size = self.size + self.ll - v
+        self.ll = v
+        return 
+    end
+    if a == "northwest" or a == "upperleft" then
+        self.size.y = v.y - self.ll.y
+        self.size.x = self.size.x + self.ll.x - v.x
+        self.ll.x = v.x
+        return 
+    end
+    if a == "southeast" or a == "lowerright" then
+        self.size.y = self.size.y + self.ll.y - v.y
+        self.size.x = v.x - self.ll.x
+        self.ll.y = v.y
+        return
+    end
+    if a == "northeast" or a == "upperright" then
+        self.size = v - self.ll
+        return
+    end
+    if a == "east" or a == "right" then
+        self.size.x = v.x - self.ll.x
+        return
+    end
+    if a == "west" or a == "left" then
+        self.size.x = self.size.x + self.ll.x - v.x
+        self.ll.x = v.x
+        return
+    end
+    if a == "north" or a == "top" then
+        self.size.y = v.y - self.ll.y
+        return
+    end
+    if a == "south" or a == "bottom" then
+        self.size.y = self.size.y + self.ll.y - v.y
+        self.ll.y = v.y
+        return
+    end
+end
+
 if _M then
     return Rectangle
 else

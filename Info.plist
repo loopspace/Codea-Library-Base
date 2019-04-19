@@ -24,5 +24,7 @@
 	</array>
 	<key>Description</key>
 	<string>No description available</string>
+	<key>Imported</key>
+	<true/>
 </dict>
 </plist>

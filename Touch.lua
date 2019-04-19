@@ -433,6 +433,9 @@ function Gesture:analyse()
         if v.moved then
             self.type.moved = true
         end
+        if v.movedfar then
+            self.type.movedfar = true
+        end
         if v.touch.state ~= ENDED  then
             self.type.ended = false
         end
@@ -452,6 +455,12 @@ function Gesture:analyse()
         self.type.tap = true
     else
         self.type.tap = false
+    end
+    if not self.type.movedfar then
+        -- probably some sort of tap
+        self.type.probablytap = true
+    else
+        self.type.probablytap = false
     end
     if self.type.ended and (ElapsedTime - self.updatedat) > .5 then
         self.type.finished = true
@@ -516,11 +525,14 @@ function Touch:init(touch)
     self.deltatime = 0
     self.laststate = 0
     self.moved = false -- did we move?
+    self.movedfar = false -- did we move far?
     self.long = false  -- long time before we did anything?
     self.short = false -- active lifetime was short?
     self.keepalive = false
     self.velDelta = .5 -- for computing a more realistic velocity
     self.velocities = {{touch.x,touch.y,ElapsedTime}}
+    self.position = vec2(touch.x,touch.y)
+    self.firstposition = vec2(touch.x,touch.y)
     self.ntouches = 1
 end
 
@@ -530,25 +542,29 @@ Updates new information from a "touch" object.
 
 function Touch:update(touch)
         -- save previous state
-        self.laststate = touch.state
+
         self.deltatime = ElapsedTime - self.updatedat
         self.updatedat = ElapsedTime
         table.insert(self.velocities,{touch.x,touch.y,ElapsedTime})
         self.ntouches = self.ntouches + 1
         -- Update the touch
         self.touch = touch
+        self.position = vec2(touch.x,touch.y)
         -- Regard ourselves as "refreshed"
         self.updated = true
         if self.gesture then
             self.gesture.updated = true
             self.gesture.updatedat = ElapsedTime
         end
-        if self.laststate == BEGAN then
+        if touch.state == BEGAN then
             self.startedat = ElapsedTime
         end
         -- record whether we've moved
         if touch.state == MOVING then
             self.moved = true
+        end
+        if not self.movedfar and self.position:distSqr(self.firstposition) > 100 then
+            self.movedfar = true
         end
         -- if it was a long time since we began, we're long
         if self.laststate == BEGAN and self.deltatime > 1 then
@@ -561,6 +577,7 @@ function Touch:update(touch)
                 self.short = true
             end
         end
+        self.laststate = touch.state
         return true
 end
 

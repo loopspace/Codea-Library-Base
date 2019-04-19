@@ -168,6 +168,47 @@ function TransformObjectTouch(obj,fn)
     end
 end
 
+function entityTransformPoint(e,p)
+    local o = e.worldPosition
+    local x = e:transformDirection(vec3(1,0,0))
+    local y = e:transformDirection(vec3(0,1,0))
+    local z = e:transformDirection(vec3(0,0,1))
+    return p.x*x+p.y*y+p.z*z+o
+end
+
+function entityTransformDirection(e,p)
+    local x = e:transformDirection(vec3(1,0,0))
+    local y = e:transformDirection(vec3(0,1,0))
+    local z = e:transformDirection(vec3(0,0,1))
+    return p.x*x+p.y*y+p.z*z
+end
+
+function entityInverseTransformPoint(e,p)
+    local o = e.worldPosition
+    local x = e:transformDirection(vec3(1,0,0))
+    local y = e:transformDirection(vec3(0,1,0))
+    local z = e:transformDirection(vec3(0,0,1))
+    p = p - o
+    local m = {x.x,x.y,x.z,y.x,y.y,y.z,z.x,z.y,z.z}
+    local d = Det3(m)
+    m = cofactor3(m)
+    p = applymatrix3({p.x,p.y,p.z},m)
+    p = vec3(p[1],p[2],p[3])/d
+    return p
+end
+
+function entityInverseTransformDirection(e,p)
+    local x = e:transformDirection(vec3(1,0,0))
+    local y = e:transformDirection(vec3(0,1,0))
+    local z = e:transformDirection(vec3(0,0,1))
+    local m = {x.x,x.y,x.z,y.x,y.y,y.z,z.x,z.y,z.z}
+    local d = Det3(m)
+    m = cofactor3(m)
+    p = applymatrix3({p.x,p.y,p.z},m)
+    p = vec3(p[1],p[2],p[3])/d
+    return p
+end
+
 --[[
 Apply a transformation to transform the following drawing commands
 relative to orientation o into commands relative to the current

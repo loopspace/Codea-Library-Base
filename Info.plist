@@ -6,9 +6,9 @@
 	<string>Unknown</string>
 	<key>Buffer Order</key>
 	<array>
-		<string>Main</string>
 		<string>ChangeLog</string>
-		<string>Graph</string>
+		<string>ColourExt</string>
+		<string>Main</string>
 		<string>Rectangle</string>
 		<string>Font</string>
 		<string>Coordinates</string>
@@ -20,7 +20,7 @@
 		<string>utf8Case</string>
 		<string>utf8</string>
 		<string>Debug</string>
-		<string>ColourExt</string>
+		<string>Graph</string>
 	</array>
 	<key>Description</key>
 	<string>No description available</string>
